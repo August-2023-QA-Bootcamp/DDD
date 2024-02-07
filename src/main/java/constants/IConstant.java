@@ -14,4 +14,9 @@ public interface IConstant {
 	String FIREFOX = "firefox";
 	String EDGE = "edge";
 	String SAFARI = "safari";
+	
+	String DB_USER = "user";
+	String DB_PASS = "pass";
+	String DB_URL = "url";
+	
 }

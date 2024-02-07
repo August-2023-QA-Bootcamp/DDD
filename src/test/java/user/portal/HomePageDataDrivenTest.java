@@ -1,20 +1,28 @@
 package user.portal;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import baseUtil.BaseClass;
+import constants.IQuery;
+import constants.Profile;
 import dto.User;
+import utils.Configuration;
 import utils.ExcelUtil;
+import utils.JDBCUtils;
 
 public class HomePageDataDrivenTest extends BaseClass{
 
+	JDBCUtils jdbcUtils;
+	
 	@DataProvider(name = "userDataExplicitArray")
 	public Object[][] getDataExArray() {
 		Object[][] obj = new Object[3][2];
@@ -93,6 +101,17 @@ public class HomePageDataDrivenTest extends BaseClass{
 		return listOfObjArr.iterator();
 	}
 	
+	@DataProvider(name = "jdbc_data_map")
+	public Iterator<Map<String, String>> getJdbcMap() throws SQLException{
+		Configuration dbConfiguration = new Configuration(Profile.DB);
+		
+		jdbcUtils = new JDBCUtils(dbConfiguration);
+		
+		jdbcUtils.executeStatement(IQuery.GET_USER);
+		
+		return jdbcUtils.getResult().iterator();
+	}
+	
 	// Standard Approach - Pro Max
 	@DataProvider(name = "userDataIteratorDTO_excel")
 	public Iterator<User> getDataIteratorDTO_excel(){
@@ -108,18 +127,23 @@ public class HomePageDataDrivenTest extends BaseClass{
 	}
 	
 	// Standard Approach
-	@Test(dataProvider = "userDataIteratorMap", enabled = false)
+	@Test(dataProvider = "jdbc_data_map", enabled = true)
 	public void loginValidationMap(Map<String, String> map) {
-		homePage.inputUserIdField(map.get("username"));
-		homePage.inputPasswordField(map.get("password"));
+		homePage.inputUserIdField(map.get("user_name"));
+		homePage.inputPasswordField(map.get("pass"));
 		homePage.clickCheckBox();
 	}
 	
 	// Standard Approach - Pro Max
-	@Test(dataProvider = "userDataIteratorDTO_excel")
+	@Test(dataProvider = "userDataIteratorDTO_excel", enabled = false)
 	public void loginValidationMap(User user) {
 		homePage.inputUserIdField(user.getUser());
 		homePage.inputPasswordField(user.getPass());
 		homePage.clickCheckBox();
+	}
+	
+	@AfterClass
+	public void closeConnection() throws SQLException {
+		jdbcUtils.getConnection().close();
 	}
 }

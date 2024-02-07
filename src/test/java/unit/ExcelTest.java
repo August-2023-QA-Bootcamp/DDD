@@ -28,13 +28,18 @@ public class ExcelTest {
 		System.err.println(moreThan2Value);
 	}
 	
-	@Test
+	@Test(enabled = false)
 	public void excelUtilTest() {
 		ExcelUtil excelUtil = new ExcelUtil("UserData.xlsx", "Sheet1");
 		excelUtil.getUserCreds().forEach(user -> {
 			System.err.println(user.getUser());
 			System.err.println(user.getPass());
 		});
-		
+	}
+	
+	@Test
+	public void downloadedSheetTest() {
+		ExcelUtil excelUtil = new ExcelUtil("Student's Projects.xlsx", "Sheet1");
+		excelUtil.getDataList().forEach(System.out::println);
 	}
 }

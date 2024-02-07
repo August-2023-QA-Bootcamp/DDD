@@ -9,8 +9,9 @@ public class Configuration {
 
 	private Properties properties = new Properties();
 	
-	String generalConfig = "configuration.properties";
+	String generalConfig = "config.properties";
 	String browserStackConfig = "browserstack.properties";
+	String dbConfig = "db.properties";
 
 	// This is a default Constructor
 	// Why I am putting loadProperty () method inside constructor
@@ -26,14 +27,17 @@ public class Configuration {
 		case BROWSERSTACK:
 			loadProperty(browserStackConfig);
 			break;
+		case DB:
+			loadProperty(dbConfig);
+			break;
 		default:
 			break;
 		}
 	}
 		
-	public void loadProperty (String Profile) {
+	public void loadProperty (String profile) {
 			try {
-			properties.load(getClass().getClassLoader().getResourceAsStream("config.properties"));
+			properties.load(getClass().getClassLoader().getResourceAsStream(profile));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

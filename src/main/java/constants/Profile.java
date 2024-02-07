@@ -2,5 +2,5 @@ package constants;
 
 public enum Profile {
 
-	GENERAL, BROWSERSTACK
+	GENERAL, BROWSERSTACK, DB
 }

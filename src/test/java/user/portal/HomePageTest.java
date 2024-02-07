@@ -1,6 +1,5 @@
 package user.portal;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import baseUtil.BaseClass;

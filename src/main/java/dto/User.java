@@ -28,5 +28,7 @@ public class User {
 		this.pass = pass;
 	}
 	
-	
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
 }
